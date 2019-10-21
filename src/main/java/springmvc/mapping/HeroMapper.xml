@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间应该是对应接口的包名+类名 -->
+<mapper namespace="springmvc.dao.HeroDao">
+    <!--id应该是接口中的方法，结果类型如没有配置别名则应该使用全名称 -->
+    <select id="getHeroList" resultType="Hero" parameterType="java.util.Map">
+        select id,name from hero
+        <where>
+            <if test="name!=null">
+                and name like concat('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+
+    <!-- select元素:专门用来做写查询的SQL. -id属性:唯一标识,用来表示某一条SQL语句 id属性和mapper的namespace唯一的表示了应用中的某一条SQL语句
+        -parameterType属性:表示执行该SQL语句需要的参数的类型,建议不写,MyBatis可以自行推断出来.
+		-resultType属性:把结果集中的每一行数据封装成什么类型的对象 -->
+    <select id="getHero" parameterType="java.lang.Integer" resultType="Hero">
+		select id,name from hero WHERE id = #{id};
+	</select>
+
+    <!-- 保存操作
+		insert元素:
+			useGeneratedKeys属性:是否需要返回自动生成的主键
+			keyProperty:把自动生成的主键值设置到对象的哪一个属性上(OID)
+	 -->
+    <insert id="addHero" useGeneratedKeys="true" keyProperty="id"
+            parameterType="Hero">
+		INSERT INTO hero (id,name) VALUES(#{id},#{name})
+	</insert>
+
+    <!-- 更改操作 -->
+    <update id="updateHero" parameterType="Hero">
+		UPDATE hero SET id= #{id} ,name = #{name} WHERE id = #{id}
+	</update>
+
+    <!-- 删除操作 -->
+    <delete id="deleteHero" parameterType="java.lang.Integer">
+		DELETE FROM hero WHERE id = #{id}
+	</delete>
+</mapper>

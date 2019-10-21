@@ -13,7 +13,6 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>springmvc</servlet-name>
-    // 以.action结尾的请求交给DispatcherServlet处理
-    <url-pattern>*.action</url-pattern>
+    <url-pattern>/</url-pattern>
   </servlet-mapping>
 </web-app>

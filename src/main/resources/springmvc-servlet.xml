@@ -4,7 +4,9 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-    <context:component-scan base-package="springmvc.controller" />
+
+    <!-- 组件扫描 ： 扫描 @component 、@controller、@service、@repository 的注解-->
+    <context:component-scan base-package="springmvc" />
     <!-- 默认注册了注解映射器和注解适配器等bean -->
     <mvc:annotation-driven>
         <mvc:message-converters>
@@ -28,4 +30,33 @@
     <!-- 后端控制器配置 -->
     <!-- 前边配置的BeanNameUrlHandlerMapping，表示如过请求的URL为“上下文/hello.action”，则将会交给该Bean进行处理。 -->
     <bean name="/hello.action" class="springmvc.controller.HelloWorldController"/>
+
+
+    <!--1定义一个jdbc数据源，创建一个驱动管理数据源的bean -->
+    <bean id="jdbcDataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+        <property name="url" value="jdbc:oracle:thin:@//110.80.17.26:42521/orcl" />
+        <property name="username" value="cmis_test" />
+        <property name="password" value="cmis_test" />
+    </bean>
+
+    <!--创建一个sql会话工厂bean，指定数据源 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 1指定数据源 -->
+        <property name="dataSource" ref="jdbcDataSource" />
+        <!-- 2类型别名包，默认引入springmvc.model下的所有类 -->
+        <property name="typeAliasesPackage" value="springmvc.model"></property>
+        <!-- 3指定sql映射xml文件的路径 -->
+        <property name="mapperLocations"
+                  value="classpath:springmvc/mapping/*Mapper.xml"></property>
+    </bean>
+
+    <!--自动扫描映射接口-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 指定sql会话工厂，在上面配置过的 -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+        <!-- 指定基础包，即自动扫描springmvc.dao这个包以及它的子包下的所有映射接口类 -->
+        <property name="basePackage" value="springmvc.dao"></property>
+    </bean>
 </beans>
