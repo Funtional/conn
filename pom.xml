@@ -68,9 +68,16 @@
 
         <!--Spring java数据库访问包，在本例中主要用于提供数据源 -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-            <version>${spring.version}</version>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jdbc</artifactId>
+        <version>${spring.version}</version>
+    </dependency>
+
+        <!--宇信科技  mvn install:install-file -Dfile=C:\1yuxin\ruanjianyuan3qi\eclipse_workspace\cms\WebContent\WEB-INF\lib\cmis-plat_V1.1.0.20160314.Beta.jar -DgroupId=com.yucheng -DartifactId=cmis-plat  -Dversion=V1.1.0.20160314.Beta -Dpackaging=jar-->
+        <dependency>
+            <groupId>com.yucheng</groupId>
+            <artifactId>cmis-plat</artifactId>
+            <version>V1.1.0.20160314.Beta</version>
         </dependency>
 
     </dependencies>

@@ -3,6 +3,7 @@ package springmvc.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import springmvc.dao.WfiWorkflow2bizDao;
 import springmvc.model.WfiWorkflow2biz;
@@ -21,8 +22,8 @@ public class WfiWorkflow2bizController {
 
     @RequestMapping(value="/WfiWorkflow2biz")
     @ResponseBody
-    public WfiWorkflow2biz getWfiWorkflow2biz(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        WfiWorkflow2biz wfiWorkflow2biz = wfiWorkflow2bizService.getWfiWorkflow2bizDetail("郭靖");
+    public WfiWorkflow2biz getWfiWorkflow2biz(HttpServletRequest request, HttpServletResponse response, @RequestParam(required = false) String appl_type) throws Exception {
+        WfiWorkflow2biz wfiWorkflow2biz = wfiWorkflow2bizService.getWfiWorkflow2bizDetail(appl_type);
         return wfiWorkflow2biz;
     }
 

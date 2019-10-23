@@ -2,6 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--命名空间应该是对应接口的包名+类名 -->
 <mapper namespace="springmvc.dao.WfiWorkflow2bizDao">
+
+    <resultMap id="BaseResultMap" type="WfiWorkflow2biz">
+        <id column="pk1" property="pk1"/>
+        <result column="appl_type" property="applType"/>
+        <result column="wfsign" property="wfsign"/>
+        <result column="wfname" property="wfname"/>
+        <result column="app_url" property="appUrl"/>
+        <result column="biz_url" property="bizUrl"/>
+        <result column="prevent_list" property="preventList"/>
+        <result column="scene_scope" property="sceneScope"/>
+        <result column="remark" property="remark"/>
+        <result column="deal_url" property="dealUrl"/>
+    </resultMap>
     <!--id应该是接口中的方法，结果类型如没有配置别名则应该使用全名称 -->
     <select id="getWfiWorkflow2bizList" resultType="WfiWorkflow2biz" parameterType="java.util.Map">
         select pk1,appl_type from WfiWorkflow2biz
@@ -15,8 +28,8 @@
     <!-- select元素:专门用来做写查询的SQL. -id属性:唯一标识,用来表示某一条SQL语句 id属性和mapper的namespace唯一的表示了应用中的某一条SQL语句
         -parameterType属性:表示执行该SQL语句需要的参数的类型,建议不写,MyBatis可以自行推断出来.
 		-resultType属性:把结果集中的每一行数据封装成什么类型的对象 -->
-    <select id="getWfiWorkflow2biz" parameterType="java.lang.String" resultType="WfiWorkflow2biz">
-		select cus_name as pk1, cert_code  as  appl_type from cus_com_ldh WHERE cus_name = #{appl_type}
+    <select id="getWfiWorkflow2biz" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select *  from Wfi_Workflow2biz WHERE appl_type = #{appl_type}
 	</select>
 
     <!-- 保存操作

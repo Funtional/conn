@@ -36,9 +36,9 @@
     <bean id="jdbcDataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
-        <property name="url" value="jdbc:oracle:thin:@//110.80.17.26:42521/orcl" />
-        <property name="username" value="cmis_test" />
-        <property name="password" value="cmis_test" />
+        <property name="url" value="jdbc:oracle:thin:@//10.10.58.216:1521/utf8db" />
+        <property name="username" value="cms_bak" />
+        <property name="password" value="cms_bak" />
     </bean>
 
     <!--创建一个sql会话工厂bean，指定数据源 -->
