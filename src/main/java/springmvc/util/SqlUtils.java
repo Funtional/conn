@@ -47,26 +47,35 @@ public class SqlUtils {
         List<ParameterMapping> parameterMappings = boundSql
                 .getParameterMappings();
         String sql = boundSql.getSql().replaceAll("[\\s]+", " ");  // sql语句中多个空格都用一个空格代替
+        StringBuilder preSql = new StringBuilder();
         if (CollectionUtils.isNotEmpty(parameterMappings) && parameterObject != null) {
             TypeHandlerRegistry typeHandlerRegistry = configuration.getTypeHandlerRegistry(); // 获取类型处理器注册器，类型处理器的功能是进行java类型和数据库类型的转换<br>// 如果根据parameterObject.getClass(）可以找到对应的类型，则替换
             if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
+                // todo 暂时不会进入该分支
                 sql = sql.replaceFirst("\\?", Matcher.quoteReplacement(getParameterValue(parameterObject)));
             } else {
                 MetaObject metaObject = configuration.newMetaObject(parameterObject);// MetaObject主要是封装了originalObject对象，提供了get和set的方法用于获取和设置originalObject的属性值,主要支持对JavaBean、Collection、Map三种类型对象的操作
                 for (ParameterMapping parameterMapping : parameterMappings) {
+                    if (sql.indexOf("?") >0){
+                        preSql.append(sql.substring(0, sql.indexOf("?")));
+                        sql = sql.substring(sql.indexOf("?")+1);
+                    }
+                    System.out.println(preSql.toString());
+                    System.out.println(sql);
                     String propertyName = parameterMapping.getProperty();
                     if (metaObject.hasGetter(propertyName)) {
                         Object obj = metaObject.getValue(propertyName);
-                        sql = sql.replaceFirst("\\?", Matcher.quoteReplacement(getParameterValue(obj)));
+                        preSql.append(Matcher.quoteReplacement(getParameterValue(obj)));
                     } else if (boundSql.hasAdditionalParameter(propertyName)) {
                         Object obj = boundSql.getAdditionalParameter(propertyName);  // 该分支是动态sql
-                        sql = sql.replaceFirst("\\?", Matcher.quoteReplacement(getParameterValue(obj)));
+                        preSql.append(Matcher.quoteReplacement(getParameterValue(obj)));
                     }else{
-                        sql=sql.replaceFirst("\\?","缺失");
+                        preSql.append("缺失");
                     }//打印出缺失，提醒该参数缺失并防止错位
                 }
+                preSql.append(sql);
             }
         }
-        return sql;
+        return preSql.toString();
     }
 }

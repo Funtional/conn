@@ -30,15 +30,14 @@ public class WfiWorkflow2bizController {
 
     @RequestMapping(value="/WfiWorkflow2biz")
     @ResponseBody
-    public WfiWorkflow2biz getWfiWorkflow2biz(HttpServletRequest request, HttpServletResponse response, @RequestParam(required = false) String appl_type) throws Exception {
+    public String getWfiWorkflow2biz(HttpServletRequest request, HttpServletResponse response, @RequestParam(required = false) String appl_type) throws Exception {
         WfiWorkflow2biz wfiWorkflow2biz = wfiWorkflow2bizService.getWfiWorkflow2bizDetail(appl_type);
         Configuration configuration = sqlSessionFactory.getConfiguration();
         BoundSql boundSql = sqlSessionFactory.getConfiguration()
                 .getMappedStatement("springmvc.dao.WfiWorkflow2bizDao.addWfiWorkflow2biz").getBoundSql(wfiWorkflow2biz);
-
         String sql = SqlUtils.getSql(configuration, boundSql, "addWfiWorkflow2biz");
         System.out.println(sql);
-        return wfiWorkflow2biz;
+        return sql;
     }
 
     @RequestMapping(value="/WfiWorkflow2bizes")
