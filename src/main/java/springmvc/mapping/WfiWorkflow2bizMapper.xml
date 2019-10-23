@@ -39,7 +39,7 @@
 	 -->
     <insert id="addWfiWorkflow2biz" useGeneratedKeys="true" keyProperty="id"
             parameterType="WfiWorkflow2biz">
-		INSERT INTO WfiWorkflow2biz (id,name) VALUES(#{id},#{name})
+		insert into Wfi_Workflow2biz (pk1, appl_type, wfsign, wfname, app_url, biz_url, prevent_list, scene_scope, remark, deal_url) VALUES(#{pk1}, #{applType}, #{wfsign}, #{wfname}, #{appUrl}, #{bizUrl}, #{preventList}, #{sceneScope}, #{remark}, #{dealUrl})
 	</insert>
 
     <!-- 更改操作 -->
