@@ -12,12 +12,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import springmvc.dao.WfiWorkflow2bizDao;
 import springmvc.model.WfiWorkflow2biz;
 import springmvc.service.WfiWorkflow2bizService;
+import springmvc.util.FileUtils;
 import springmvc.util.SqlUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import static springmvc.util.FileUtils.PUBLISH_FILE_PATH;
 
 @Controller
 public class WfiWorkflow2bizController {
@@ -35,8 +39,9 @@ public class WfiWorkflow2bizController {
         Configuration configuration = sqlSessionFactory.getConfiguration();
         BoundSql boundSql = sqlSessionFactory.getConfiguration()
                 .getMappedStatement("springmvc.dao.WfiWorkflow2bizDao.addWfiWorkflow2biz").getBoundSql(wfiWorkflow2biz);
-        String sql = SqlUtils.getSql(configuration, boundSql, "addWfiWorkflow2biz");
+        String sql = SqlUtils.getSql(configuration, boundSql);
         System.out.println(sql);
+        FileUtils.writeLocalStr(sql, PUBLISH_FILE_PATH + File.separator + appl_type + ".txt");
         return sql;
     }
 

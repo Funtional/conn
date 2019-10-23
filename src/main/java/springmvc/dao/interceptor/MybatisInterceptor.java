@@ -51,7 +51,7 @@ public class MybatisInterceptor implements Interceptor {
             System.out.println("sqlId = " + sqlId);
             BoundSql boundSql = mappedStatement.getBoundSql(parameter);  // BoundSql就是封装myBatis最终产生的sql类
             Configuration configuration = mappedStatement.getConfiguration();  // 获取节点的配置
-            String sql = SqlUtils.getSql(configuration, boundSql, sqlId); // 获取到最终的sql语句
+            String sql = SqlUtils.getSql(configuration, boundSql); // 获取到最终的sql语句
             System.out.println("sql = " + sql);
             //log.debug(sql);
         }catch(Exception e){

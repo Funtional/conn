@@ -16,8 +16,8 @@
         <result column="deal_url" property="dealUrl"/>
     </resultMap>
     <!--id应该是接口中的方法，结果类型如没有配置别名则应该使用全名称 -->
-    <select id="getWfiWorkflow2bizList" resultType="WfiWorkflow2biz" parameterType="java.util.Map">
-        select pk1,appl_type from WfiWorkflow2biz
+    <select id="getWfiWorkflow2bizList" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select *  from Wfi_Workflow2biz
         <where>
             <if test="appl_type!=null">
                 and appl_type like concat('%',#{name},'%')
@@ -37,18 +37,13 @@
 			useGeneratedKeys属性:是否需要返回自动生成的主键
 			keyProperty:把自动生成的主键值设置到对象的哪一个属性上(OID)
 	 -->
-    <insert id="addWfiWorkflow2biz" useGeneratedKeys="true" keyProperty="id"
+    <insert id="addWfiWorkflow2biz" useGeneratedKeys="true" keyProperty="pk1"
             parameterType="WfiWorkflow2biz">
-		insert into Wfi_Workflow2biz (pk1, appl_type, wfsign, wfname, app_url, biz_url, prevent_list, scene_scope, remark, deal_url) VALUES(#{pk1}, #{applType}, #{wfsign}, #{wfname}, #{appUrl}, #{bizUrl}, #{preventList}, #{sceneScope}, #{remark}, #{dealUrl})
+		INSERT INTO Wfi_Workflow2biz (pk1, appl_type, wfsign, wfname, app_url, biz_url, prevent_list, scene_scope, remark, deal_url) VALUES(#{pk1}, #{applType}, #{wfsign}, #{wfname}, #{appUrl}, #{bizUrl}, #{preventList}, #{sceneScope}, #{remark}, #{dealUrl})
 	</insert>
 
-    <!-- 更改操作 -->
-    <update id="updateWfiWorkflow2biz" parameterType="WfiWorkflow2biz">
-		UPDATE WfiWorkflow2biz SET id= #{id} ,name = #{name} WHERE id = #{id}
-	</update>
-
     <!-- 删除操作 -->
-    <delete id="deleteWfiWorkflow2biz" parameterType="java.lang.Integer">
-		DELETE FROM WfiWorkflow2biz WHERE id = #{id}
+    <delete id="deleteWfiWorkflow2biz" parameterType="java.lang.String">
+		DELETE FROM Wfi_Workflow2biz WHERE appl_type = #{applType}
 	</delete>
 </mapper>

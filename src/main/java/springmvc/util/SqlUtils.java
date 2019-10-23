@@ -15,19 +15,17 @@ import java.util.regex.Matcher;
 
 public class SqlUtils {
     // 封装了一下sql语句，使得结果返回完整xml路径下的sql语句节点id + sql语句
-    public static String getSql(Configuration configuration, BoundSql boundSql, String sqlId) {
+    public static String getSql(Configuration configuration, BoundSql boundSql) {
         String sql = showSql(configuration, boundSql);
         StringBuilder str = new StringBuilder(100);
-        str.append(sqlId);
-        str.append(":");
-        str.append(sql);
+        str.append(sql).append(";");
         return str.toString();
     }
     /*<br>    *如果参数是String，则添加单引号， 如果是日期，则转换为时间格式器并加单引号； 对参数是null和不是null的情况作了处理<br>　　*/
     private static String getParameterValue(Object obj) {
         String value = null;
         if (obj instanceof String) {
-            value = "'" + obj.toString() + "'";
+            value = "'" + StringUtils.singleQuotesReplacement(obj.toString()) + "'";
         } else if (obj instanceof Date) {
             DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.CHINA);
             value = "'" + formatter.format(new Date()) + "'";
@@ -35,7 +33,7 @@ public class SqlUtils {
             if (obj != null) {
                 value = obj.toString();
             } else {
-                value = "";
+                value = "null";
             }
 
         }
@@ -60,15 +58,13 @@ public class SqlUtils {
                         preSql.append(sql.substring(0, sql.indexOf("?")));
                         sql = sql.substring(sql.indexOf("?")+1);
                     }
-                    System.out.println(preSql.toString());
-                    System.out.println(sql);
                     String propertyName = parameterMapping.getProperty();
                     if (metaObject.hasGetter(propertyName)) {
                         Object obj = metaObject.getValue(propertyName);
-                        preSql.append(Matcher.quoteReplacement(getParameterValue(obj)));
+                        preSql.append(getParameterValue(obj));
                     } else if (boundSql.hasAdditionalParameter(propertyName)) {
                         Object obj = boundSql.getAdditionalParameter(propertyName);  // 该分支是动态sql
-                        preSql.append(Matcher.quoteReplacement(getParameterValue(obj)));
+                        preSql.append(getParameterValue(obj));
                     }else{
                         preSql.append("缺失");
                     }//打印出缺失，提醒该参数缺失并防止错位
