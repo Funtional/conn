@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="springmvc.dao.ToSqlDao">
+    <insert id="insert" parameterType="java.lang.String">
+        ${value}
+    </insert>
+
+    <select id="selectList" parameterType="java.lang.String" resultType="java.util.HashMap" useCache="false">
+        ${value}
+    </select>
+
+    <select id="selectOne" parameterType="java.lang.String" resultType="java.lang.String" useCache="false">
+        ${value}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.String">
+        ${value}
+    </delete>
+
+    <update id="update" parameterType="java.lang.String">
+        ${value}
+    </update>
+
+    <select id="getWfiNode2bizList" resultType="java.util.HashMap" parameterType="java.util.Map">
+        select * from Wfi_Node2biz
+        <where>
+            <if test="pk1!=null">
+                pk1 = #{pk1}
+            </if>
+            <if test="nodename!=null">
+                and nodename like concat('%',#{nodename},'%')
+            </if>
+        </where>
+    </select>
+
+</mapper>
