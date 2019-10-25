@@ -18,7 +18,7 @@ public class SqlUtils {
     public static String getSql(Configuration configuration, BoundSql boundSql) {
         String sql = showSql(configuration, boundSql);
         StringBuilder str = new StringBuilder(100);
-        str.append(sql).append(";");
+        str.append(sql);
         return str.toString();
     }
     /*<br>    *如果参数是String，则添加单引号， 如果是日期，则转换为时间格式器并加单引号； 对参数是null和不是null的情况作了处理<br>　　*/

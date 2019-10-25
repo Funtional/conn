@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static springmvc.config.SqlConfig.SQL_LINEFEED;
 import static springmvc.util.FileUtils.PUBLISH_FILE_PATH;
 
 @Controller
@@ -50,10 +51,10 @@ public class WfiPublishController {
         WfiWorkflow2biz wfiWorkflow2biz = wfiWorkflow2bizService.getWfiWorkflow2bizDetail(appl_type);
         boundSql = configuration.getMappedStatement("springmvc.dao.WfiWorkflow2bizDao.deleteWfiWorkflow2biz").getBoundSql(wfiWorkflow2biz);
         sql = SqlUtils.getSql(configuration, boundSql);
-        publishSqlSb.append("\n").append(sql);
+        publishSqlSb.append("\n").append(sql).append(SQL_LINEFEED);
         boundSql = configuration.getMappedStatement("springmvc.dao.WfiWorkflow2bizDao.addWfiWorkflow2biz").getBoundSql(wfiWorkflow2biz);
         sql = SqlUtils.getSql(configuration, boundSql);
-        publishSqlSb.append("\n").append(sql);
+        publishSqlSb.append(sql).append(SQL_LINEFEED);
 
         /** 开始 Wfi_Node2biz**/
         paramMap.clear();
@@ -62,12 +63,12 @@ public class WfiPublishController {
         if (wfiNode2bizList.size() > 0){
             boundSql = configuration.getMappedStatement("springmvc.dao.WfiNode2bizDao.deleteWfiNode2biz").getBoundSql(wfiNode2bizList.get(0));
             sql = SqlUtils.getSql(configuration, boundSql);
-            publishSqlSb.append("\n").append(sql);
+            publishSqlSb.append(sql).append(SQL_LINEFEED);
             for (WfiNode2biz wfiNode2biz: wfiNode2bizList
                     ) {
                 boundSql = configuration.getMappedStatement("springmvc.dao.WfiNode2bizDao.addWfiNode2biz").getBoundSql(wfiNode2biz);
                 sql = SqlUtils.getSql(configuration, boundSql);
-                publishSqlSb.append("\n").append(sql);
+                publishSqlSb.append(sql).append(SQL_LINEFEED);
             }
         }
 
